@@ -1,0 +1,122 @@
+{
+  "info": {
+    "_postman_id": "f2a5afa5-aacb-4e8e-b799-c6c0a398ad4d",
+    "name": "Job Board API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53696293",
+    "_collection_link": "https://go.postman.co/collection/53696293-f2a5afa5-aacb-4e8e-b799-c6c0a398ad4d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "POST – Get JWT Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.access) {",
+              "    pm.collectionVariables.set(\"token\", res.access);",
+              "    console.log(\"Token saved to collection variable: token\");",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"{{username}}\", \"password\": \"{{password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/token/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "token",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Unauthenticated Jobs (Locked)",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Premium Jobs (Unlocked)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ]
+      },
+      "response": []
+    },
+    {
+      "name": "GET – Single Job Detail",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Initialize collection variables if not already set",
+          "if (!pm.collectionVariables.has(\"username\") || pm.collectionVariables.get(\"username\") === \"\") {",
+          "    pm.collectionVariables.set(\"username\", \"premiumuser\");",
+          "}",
+          "if (!pm.collectionVariables.has(\"password\") || pm.collectionVariables.get(\"password\") === \"\") {",
+          "    pm.collectionVariables.set(\"password\", \"premiumpass\");",
+          "}",
+          "if (!pm.collectionVariables.has(\"token\")) {",
+          "    pm.collectionVariables.set(\"token\", \"\");",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
